@@ -1,26 +1,33 @@
 'use strict';
 
-var PIN_WIDTH = 40;
-var PIN_HEIGHT = 40;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var PINS_COUNT = 8;
 
 var mapStatus = document.querySelector('.map');
 mapStatus.classList.remove('map--faded');
 
+var mapOverlayWidth = document.querySelector('.map__overlay').offsetWidth;
+
 var mapPinsElement = document.querySelector('.map__pins');
 
-var mapPinsTemplate = document.querySelector('#pin')
+var mapPinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 
-var getRandom =  function () {
-  return Math.random();
-};
-
 var getRandomArbitrary = function (min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.round(Math.random() * (max - min) + min);
 };
 
-var arrayAvatarSrc = [
+var getRandomItem = function (array) {
+  return Math.floor(Math.random() * array.length);
+};
+
+var getRandomArray = function (a,b) {
+  return Math.random() - 0.5;
+}
+
+var ARRAY_AVATARS_SRC = [
   1,
   2,
   3,
@@ -31,29 +38,55 @@ var arrayAvatarSrc = [
   8
 ];
 
-var arrayApartamentStyle = [
+var ARRAY_APARTAMENTS_STYLE = [
   'palace',
   'flat',
   'house',
   'bungalo'
 ];
 
-var getRandomAvatarSrc = function (i) {
-  var
+ARRAY_AVATARS_SRC.sort(getRandomArray);
+
+var getArrayPins = function () {
+  var arrayPins = [];
+  for (var i = 0; i < PINS_COUNT; i++) {
+    var pinProperty = {
+      "author":
+        {
+          "avatar": ARRAY_AVATARS_SRC[i]
+        },
+      "offer":
+        {
+          "type": ARRAY_APARTAMENTS_STYLE[getRandomItem(ARRAY_APARTAMENTS_STYLE)]
+        },
+      "location":
+        {
+          "x": getRandomArbitrary(0, mapOverlayWidth),
+          "y": getRandomArbitrary(130, 630)
+        }
+    }
+    arrayPins.push(pinProperty);
+  }
+  return arrayPins;
 };
 
-var getPinsProperty = function (pinsCount) {
-  var arrayPinsProperties = [];
-  var arrayAvatarSrc = getAvatarSrc(pinsCount)
-  for (var i = 1; i <= pinsCount; i++) {
-    var pinProperty = {
-      author: ,
-      offer: ,
-      location:
-    }
-    arrayPinsProperties.push(pinProperty);
-  }
-  return arrayPinsProperties;
+var arrayPins = getArrayPins();
+
+var renderPin = function (pin) {
+  var pinElement = mapPinTemplate.cloneNode(true);
+  var pinLocationX = pin.location.x - (PIN_WIDTH / 2);
+  var pinLocationY = pin.location.y + PIN_HEIGHT;
+
+  pinElement.style = 'left: ' + pinLocationX + 'px; top: ' + pinLocationY + 'px;';
+  pinElement.querySelector('img').src = 'img/avatars/user0' + pin.author.avatar + '.png';
+  pinElement.querySelector('img').alt = pin.offer.type;
+
+  return pinElement;
+};
+
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < arrayPins.length; i++) {
+  fragment.appendChild(renderPin(arrayPins[i]));
 }
 
-// arrayPins
+mapPinsElement.appendChild(fragment);
