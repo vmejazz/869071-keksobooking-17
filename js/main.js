@@ -23,9 +23,9 @@ var getRandomItem = function (array) {
   return Math.floor(Math.random() * array.length);
 };
 
-var getRandomArray = function (a,b) {
+var getRandomArray = function () {
   return Math.random() - 0.5;
-}
+};
 
 var ARRAY_AVATARS_SRC = [
   1,
@@ -51,20 +51,20 @@ var getArrayPins = function () {
   var arrayPins = [];
   for (var i = 0; i < PINS_COUNT; i++) {
     var pinProperty = {
-      "author":
+      'author':
         {
-          "avatar": ARRAY_AVATARS_SRC[i]
+          'avatar': ARRAY_AVATARS_SRC[i]
         },
-      "offer":
+      'offer':
         {
-          "type": ARRAY_APARTAMENTS_STYLE[getRandomItem(ARRAY_APARTAMENTS_STYLE)]
+          'type': ARRAY_APARTAMENTS_STYLE[getRandomItem(ARRAY_APARTAMENTS_STYLE)]
         },
-      "location":
+      'location':
         {
-          "x": getRandomArbitrary(0, mapOverlayWidth),
-          "y": getRandomArbitrary(130, 630)
+          'x': getRandomArbitrary(0, mapOverlayWidth),
+          'y': getRandomArbitrary(130, 630)
         }
-    }
+    };
     arrayPins.push(pinProperty);
   }
   return arrayPins;
