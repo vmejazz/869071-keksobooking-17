@@ -23,49 +23,61 @@ var getRandomItem = function (array) {
   return Math.floor(Math.random() * array.length);
 };
 
-var getRandomArray = function () {
-  return Math.random() - 0.5;
+var ARRAY_APARTAMENTS_STYLE = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalo': 'Бунгало'
 };
 
-var ARRAY_AVATARS_SRC = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8
-];
+var getRandomApartamensStyle = function () {
+  var keys = Object.keys(ARRAY_APARTAMENTS_STYLE);
+  return ARRAY_APARTAMENTS_STYLE[keys[getRandomItem(keys)]];
+};
 
-var ARRAY_APARTAMENTS_STYLE = [
-  'palace',
-  'flat',
-  'house',
-  'bungalo'
-];
+var getArray = function (arrayCount) {
+  var array = [];
+  for (var i = 0; i < arrayCount; i++) {
+    array.push(i + 1);
+  }
+  return array;
+};
 
-ARRAY_AVATARS_SRC.sort(getRandomArray);
+var getRandomArray = function (array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var tempRandom = getRandomArbitrary(0, i - 1);
+    var tempProperty = array[tempRandom];
+    array[tempRandom] = array[i];
+    array[i] = tempProperty;
+  }
+  return array;
+};
+
+var arraySrc = getRandomArray(getArray(PINS_COUNT));
+
+var getPinProperty = function (i) {
+  var pinProperty = {
+    'author':
+      {
+        'avatar': 'img/avatars/user0' + arraySrc[i] + '.png'
+      },
+    'offer':
+      {
+        'type': getRandomApartamensStyle()
+      },
+    'location':
+      {
+        'x': getRandomArbitrary(0, mapOverlayWidth - (PIN_WIDTH * 2)),
+        'y': getRandomArbitrary(130, 630)
+      }
+  };
+  return pinProperty;
+};
 
 var getArrayPins = function () {
   var arrayPins = [];
   for (var i = 0; i < PINS_COUNT; i++) {
-    var pinProperty = {
-      'author':
-        {
-          'avatar': ARRAY_AVATARS_SRC[i]
-        },
-      'offer':
-        {
-          'type': ARRAY_APARTAMENTS_STYLE[getRandomItem(ARRAY_APARTAMENTS_STYLE)]
-        },
-      'location':
-        {
-          'x': getRandomArbitrary(0, mapOverlayWidth),
-          'y': getRandomArbitrary(130, 630)
-        }
-    };
-    arrayPins.push(pinProperty);
+    arrayPins.push(getPinProperty(i));
   }
   return arrayPins;
 };
@@ -74,11 +86,11 @@ var arrayPins = getArrayPins();
 
 var renderPin = function (pin) {
   var pinElement = mapPinTemplate.cloneNode(true);
-  var pinLocationX = pin.location.x - (PIN_WIDTH / 2);
+  var pinLocationX = pin.location.x + (PIN_WIDTH / 2);
   var pinLocationY = pin.location.y + PIN_HEIGHT;
 
   pinElement.style = 'left: ' + pinLocationX + 'px; top: ' + pinLocationY + 'px;';
-  pinElement.querySelector('img').src = 'img/avatars/user0' + pin.author.avatar + '.png';
+  pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.type;
 
   return pinElement;
