@@ -35,7 +35,7 @@ var getRandomApartamensStyle = function () {
   return ARRAY_APARTAMENTS_STYLE[keys[getRandomItem(keys)]];
 };
 
-var getArray = function (arrayCount) {
+var getArraySrc = function (arrayCount) {
   var array = [];
   for (var i = 0; i < arrayCount; i++) {
     array.push(i + 1);
@@ -43,7 +43,7 @@ var getArray = function (arrayCount) {
   return array;
 };
 
-var getRandomArray = function (array) {
+var getShakeArray = function (array) {
   for (var i = array.length - 1; i > 0; i--) {
     var tempRandom = getRandomArbitrary(0, i - 1);
     var tempProperty = array[tempRandom];
@@ -53,7 +53,7 @@ var getRandomArray = function (array) {
   return array;
 };
 
-var arraySrc = getRandomArray(getArray(PINS_COUNT));
+var arraySrc = getShakeArray(getArraySrc(PINS_COUNT));
 
 var getPinProperty = function (i) {
   var pinProperty = {
