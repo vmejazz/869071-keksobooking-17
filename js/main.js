@@ -5,9 +5,10 @@ var PIN_HEIGHT = 70;
 var PINS_COUNT = 8;
 
 var mapStatus = document.querySelector('.map');
-mapStatus.classList.remove('map--faded');
+// mapStatus.classList.remove('map--faded'); // переводим блок карты в активное состояние
 
 var mapOverlayWidth = document.querySelector('.map__overlay').offsetWidth;
+// var mapOverlayHeight = document.querySelector('.map__overlay').offsetHeight;
 
 var mapPinsElement = document.querySelector('.map__pins');
 
@@ -97,8 +98,42 @@ var renderPin = function (pin) {
 };
 
 var fragment = document.createDocumentFragment();
-for (var i = 0; i < arrayPins.length; i++) {
-  fragment.appendChild(renderPin(arrayPins[i]));
+for (var k = 0; k < arrayPins.length; k++) {
+  fragment.appendChild(renderPin(arrayPins[k]));
 }
 
-mapPinsElement.appendChild(fragment);
+// mapPinsElement.appendChild(fragment); // добавлем созданные пины на карту
+
+
+// module4-task1  -------------------------------------------------------------
+
+
+var userForm = document.querySelector('.ad-form');
+var mapActivator = document.querySelector('.map__pin--main');
+var inputAddress = userForm.querySelector('input[name=address]');
+var formsElement = document.querySelectorAll('form');
+
+var getCoordinatePin = function (element) {
+  var x = Math.round(element.getBoundingClientRect().left + (element.offsetWidth / 2));
+  var y = Math.round(element.getBoundingClientRect().top + element.offsetHeight);
+  return (x + ',' + y);
+};
+
+var changeStateElementsForm = function (toggle) {
+  for (var i = 0; i < formsElement.length; i++) {
+    for (var j = 0; j < formsElement[i].children.length; j++) {
+      formsElement[i].children[j].disabled = toggle;
+    }
+  }
+};
+
+mapActivator.addEventListener('click', function () {
+  mapStatus.classList.remove('map--faded');
+  mapActivator.removeEventListener('click', function () {});
+  changeStateElementsForm(false);
+  userForm.classList.remove('ad-form--disabled');
+  mapPinsElement.appendChild(fragment);
+});
+
+changeStateElementsForm(true);
+inputAddress.value = getCoordinatePin(mapActivator);
