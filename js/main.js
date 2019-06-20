@@ -7,8 +7,9 @@ var PINS_COUNT = 8;
 var mapStatus = document.querySelector('.map');
 // mapStatus.classList.remove('map--faded'); // переводим блок карты в активное состояние
 
-var mapOverlayWidth = document.querySelector('.map__overlay').offsetWidth;
-// var mapOverlayHeight = document.querySelector('.map__overlay').offsetHeight;
+var mapOverlay = document.querySelector('.map__overlay');
+// var mapOverlayWidth = mapOverlay.offsetWidth;
+// var mapOverlayHeight = mapOverlay.offsetHeight;
 
 var mapPinsElement = document.querySelector('.map__pins');
 
@@ -68,7 +69,7 @@ var getPinProperty = function (i) {
       },
     'location':
       {
-        'x': getRandomArbitrary(0, mapOverlayWidth - (PIN_WIDTH * 2)),
+        'x': getRandomArbitrary(0, mapOverlay.offsetWidth - (PIN_WIDTH * 2)),
         'y': getRandomArbitrary(130, 630)
       }
   };
@@ -112,6 +113,10 @@ var userForm = document.querySelector('.ad-form');
 var mapActivator = document.querySelector('.map__pin--main');
 var inputAddress = userForm.querySelector('input[name=address]');
 var formsElement = document.querySelectorAll('form');
+var coordinatePinStart = {
+  x: Math.round((mapOverlay.offsetWidth / 2) + (mapActivator.offsetWidth / 2)),
+  y: Math.round((mapOverlay.offsetHeight / 2) + (mapActivator.offsetHeight / 2))
+};
 
 var getCoordinatePin = function (element) {
   var x = Math.round(element.getBoundingClientRect().left + (element.offsetWidth / 2));
@@ -133,7 +138,8 @@ mapActivator.addEventListener('click', function () {
   changeStateElementsForm(false);
   userForm.classList.remove('ad-form--disabled');
   mapPinsElement.appendChild(fragment);
+  inputAddress.value = getCoordinatePin(mapActivator);
 });
 
 changeStateElementsForm(true);
-inputAddress.value = getCoordinatePin(mapActivator);
+inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
