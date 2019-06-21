@@ -143,3 +143,52 @@ mapActivator.addEventListener('click', function () {
 
 changeStateElementsForm(true);
 inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+
+// module5-task1 ------------------------------------------ module5-task1
+
+var typeOfRoom = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var MIN_PRICE_FOR_ROOM = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+var getMinPriceForRoom = function (selectedRoom) {
+  return MIN_PRICE_FOR_ROOM[selectedRoom];
+};
+
+var chouseTypeOfRoom = function (evtItem) {
+  var newMinValue = getMinPriceForRoom(evtItem.value);
+  priceInput.setAttribute('min', newMinValue);
+  priceInput.setAttribute('placeholder', newMinValue);
+};
+
+typeOfRoom.addEventListener('click', function (evt) {
+  chouseTypeOfRoom(evt.target);
+}, true);
+
+// --------------------------------------------------------- замена время выезда/въезда
+
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+
+var chouseTime = function (evtTime, timeChange) {
+
+  for (var i = 0; i < timeChange.length; i++) {
+    if (evtTime.value === timeChange[i].value) {
+      timeChange[i].setAttribute('selected', '');
+    } else {
+      timeChange[i].removeAttribute('selected', '');
+    }
+  }
+};
+
+timeIn.addEventListener('click', function (evt) {
+  chouseTime(evt.target, timeOut);
+});
+
+timeOut.addEventListener('click', function (evt) {
+  chouseTime(evt.target, timeIn);
+});
