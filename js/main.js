@@ -174,21 +174,58 @@ typeOfRoom.addEventListener('click', function (evt) {
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
 
-var chouseTime = function (evtTime, timeChange) {
-
-  for (var i = 0; i < timeChange.length; i++) {
-    if (evtTime.value === timeChange[i].value) {
-      timeChange[i].setAttribute('selected', '');
-    } else {
-      timeChange[i].removeAttribute('selected', '');
-    }
+var setSyncTimeInOut = function (target, timeEvn) {
+  if (timeEvn === 'In') {
+    timeOut.value = target.value;
   }
+  timeIn.value = target.value;
 };
 
-timeIn.addEventListener('click', function (evt) {
-  chouseTime(evt.target, timeOut);
+timeIn.addEventListener('change', function (evt) {
+  setSyncTimeInOut(evt.target, 'In');
 });
 
-timeOut.addEventListener('click', function (evt) {
-  chouseTime(evt.target, timeIn);
+timeOut.addEventListener('change', function (evt) {
+  setSyncTimeInOut(evt.target, 'Out');
 });
+
+// ------------------------------------------------------------ Перетаскиваем маркер
+
+var onPinDown = function (evt) {
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onPinMoveOnMap = function (moveEvt) {
+
+    moveEvt.preventDefault();
+    // mapActivator.style.position = 'absolute';
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mapActivator.style.top = (mapActivator.offsetTop - shift.y) + 'px';
+    mapActivator.style.left = (mapActivator.offsetLeft - shift.x) + 'px';
+
+  };
+
+  var onPinUpOnMap = function () {
+    inputAddress.value = getCoordinatePin(mapActivator);
+    mapActivator.removeEventListener('mousemove', onPinMoveOnMap);
+    mapActivator.removeEventListener('mouseup', onPinUpOnMap);
+  };
+
+  mapActivator.addEventListener('mousemove', onPinMoveOnMap);
+  mapActivator.addEventListener('mouseup', onPinUpOnMap);
+};
+
+mapActivator.addEventListener('mousedown', onPinDown);
