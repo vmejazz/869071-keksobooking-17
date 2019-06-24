@@ -5,11 +5,8 @@ var PIN_HEIGHT = 70;
 var PINS_COUNT = 8;
 
 var mapStatus = document.querySelector('.map');
-// mapStatus.classList.remove('map--faded'); // переводим блок карты в активное состояние
 
 var mapOverlay = document.querySelector('.map__overlay');
-// var mapOverlayWidth = mapOverlay.offsetWidth;
-// var mapOverlayHeight = mapOverlay.offsetHeight;
 
 var mapPinsElement = document.querySelector('.map__pins');
 
