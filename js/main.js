@@ -1,14 +1,5 @@
 'use strict';
 
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
-var PINS_COUNT = 8;
-var LIMIT_PIN_TOP = 130;
-var LIMIT_PIN_BOTTOM = 630;
-var LIMIT_PIN_LEFT = 0;
-var LIMIT_PIN_RIGHT = 1130;
-
-
 var mapStatus = document.querySelector('.map');
 
 var mapOverlay = document.querySelector('.map__overlay');
@@ -18,6 +9,16 @@ var mapPinsElement = document.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
+
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var PINS_COUNT = 8;
+var LIMIT_PIN_TOP = 130;
+var LIMIT_PIN_BOTTOM = 630;
+var LIMIT_PIN_LEFT = 0;
+var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - 70;
+console.log(LIMIT_PIN_RIGHT);
+
 
 var getRandomArbitrary = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -121,7 +122,9 @@ var coordinatePinStart = {
 };
 
 var getCoordinatePin = function (element) {
-  var x = Math.round(element.getBoundingClientRect().left - (element.offsetWidth / 2));
+  // var x = Math.round(element.getBoundingClientRect().left - (element.offsetWidth / 2));
+  // var y = Math.round(element.getBoundingClientRect().top);
+  var x = Math.round(element.offsetLeft);
   var y = Math.round(element.getBoundingClientRect().top);
   return (x + ',' + y);
 };
@@ -206,8 +209,8 @@ var onPinDown = function (evt) {
   var onPinMoveOnMap = function (moveEvt) {
 
     moveEvt.preventDefault();
-    mapActivator.style.position = 'absolute';
-    mapActivator.style.zIndex = '100';
+    // mapActivator.style.position = 'absolute';
+    // mapActivator.style.zIndex = '100';
 
 
     var shift = {
@@ -221,32 +224,44 @@ var onPinDown = function (evt) {
     };
 
     var checkLimitPin = function (element) {
-      if (element.offsetTop < LIMIT_PIN_TOP) {
-        element.style.top = LIMIT_PIN_TOP + 'px';
-      } else if (element.offsetTop > LIMIT_PIN_BOTTOM) {
-        element.style.top = LIMIT_PIN_BOTTOM + 'px';
-      } else if (element.offsetLeft < LIMIT_PIN_LEFT) {
-        element.style.left = LIMIT_PIN_LEFT + 'px';
+      var elementCoordinate = {
+        x: element.offsetLeft,
+        y: element.offsetTop
+      };
+      if (elementCoordinate.y < LIMIT_PIN_TOP) {
+        elementCoordinate.y = LIMIT_PIN_TOP;
+      } else if (elementCoordinate.y > LIMIT_PIN_BOTTOM) {
+        elementCoordinate.y = LIMIT_PIN_BOTTOM - 5;
+      } else if (elementCoordinate.x < LIMIT_PIN_LEFT) {
+        elementCoordinate.x = LIMIT_PIN_LEFT;
       } else if (element.offsetLeft > LIMIT_PIN_RIGHT) {
-        element.style.left = LIMIT_PIN_RIGHT + 'px';
+        elementCoordinate.x = LIMIT_PIN_RIGHT - 5;
       } else {
-        element.style.top = (element.offsetTop - shift.y) + 'px';
-        element.style.left = (element.offsetLeft - shift.x) + 'px';
+        elementCoordinate.y = element.offsetTop - shift.y;
+        elementCoordinate.x = element.offsetLeft - shift.x;
       }
+      return elementCoordinate;
     };
 
-    checkLimitPin(mapActivator);
+    var moveElement = function () {
+      var newCoordinate = checkLimitPin(mapActivator);
+      console.log(newCoordinate);
+      mapActivator.style.left = newCoordinate.x + 'px';
+      mapActivator.style.top = newCoordinate.y + 'px';
+    };
+
+    moveElement();
   };
 
   var onPinUpOnMap = function () {
     inputAddress.value = getCoordinatePin(mapActivator);
-    mapActivator.removeEventListener('mousemove', onPinMoveOnMap);
-    mapActivator.removeEventListener('mouseup', onPinUpOnMap);
+    document.removeEventListener('mousemove', onPinMoveOnMap);
+    document.removeEventListener('mouseup', onPinUpOnMap);
   };
 
   // mapActivator.removeEventListener('click', function() {});
-  mapActivator.addEventListener('mousemove', onPinMoveOnMap);
-  mapActivator.addEventListener('mouseup', onPinUpOnMap);
+  document.addEventListener('mousemove', onPinMoveOnMap);
+  document.addEventListener('mouseup', onPinUpOnMap);
 };
 
-mapActivator.addEventListener('mousedown', onPinDown);
+document.addEventListener('mousedown', onPinDown, true);
