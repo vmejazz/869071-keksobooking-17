@@ -122,8 +122,6 @@ var coordinatePinStart = {
 };
 
 var getCoordinatePin = function (element) {
-  // var x = Math.round(element.getBoundingClientRect().left - (element.offsetWidth / 2));
-  // var y = Math.round(element.getBoundingClientRect().top);
   var x = Math.round(element.offsetLeft + mapActivator.offsetWidth / 2);
   var y = Math.round(element.getBoundingClientRect().top);
   return (x + ',' + y);
@@ -209,9 +207,6 @@ var onPinDown = function (evt) {
   var onPinMoveOnMap = function (moveEvt) {
 
     moveEvt.preventDefault();
-    // mapActivator.style.position = 'absolute';
-    // mapActivator.style.zIndex = '100';
-
 
     var shift = {
       x: startCoords.x - moveEvt.clientX,
@@ -260,7 +255,6 @@ var onPinDown = function (evt) {
     document.removeEventListener('mouseup', onPinUpOnMap);
   };
 
-  // mapActivator.removeEventListener('click', function() {});
   document.addEventListener('mousemove', onPinMoveOnMap);
   document.addEventListener('mouseup', onPinUpOnMap);
 };
