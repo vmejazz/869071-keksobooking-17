@@ -228,20 +228,10 @@ var onPinDown = function (evt) {
         x: element.offsetLeft,
         y: element.offsetTop
       };
-      // if (elementCoordinate.y < LIMIT_PIN_TOP) {
-      //   elementCoordinate.y = LIMIT_PIN_TOP;
-      // } else if (elementCoordinate.y > LIMIT_PIN_BOTTOM) {
-      //   elementCoordinate.y = LIMIT_PIN_BOTTOM - 5;
-      // } else if (elementCoordinate.x < LIMIT_PIN_LEFT) {
-      //   elementCoordinate.x = LIMIT_PIN_LEFT;
-      // } else if (element.offsetLeft > LIMIT_PIN_RIGHT) {
-      //   elementCoordinate.x = LIMIT_PIN_RIGHT - 5;
-      // } else {
-      //   elementCoordinate.y = element.offsetTop - shift.y;
-      //   elementCoordinate.x = element.offsetLeft - shift.x;
-      // }
+
       elementCoordinate.y = element.offsetTop - shift.y;
       elementCoordinate.x = element.offsetLeft - shift.x;
+
       if (elementCoordinate.y < LIMIT_PIN_TOP) {
         elementCoordinate.y = LIMIT_PIN_TOP;
       }
