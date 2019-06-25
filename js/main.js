@@ -10,14 +10,18 @@ var mapPinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 
+var userForm = document.querySelector('.ad-form');
+var mapActivator = document.querySelector('.map__pin--main');
+var inputAddress = userForm.querySelector('input[name=address]');
+var formsElement = document.querySelectorAll('form');
+
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var PINS_COUNT = 8;
 var LIMIT_PIN_TOP = 130;
 var LIMIT_PIN_BOTTOM = 630;
-var LIMIT_PIN_LEFT = 0;
-var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - 70;
-console.log(LIMIT_PIN_RIGHT);
+var LIMIT_PIN_LEFT = -(mapActivator.offsetWidth / 2);
+var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - (mapActivator.offsetWidth / 2);
 
 
 var getRandomArbitrary = function (min, max) {
@@ -112,10 +116,6 @@ for (var k = 0; k < arrayPins.length; k++) {
 // module4-task1  -------------------------------------------------------------
 
 
-var userForm = document.querySelector('.ad-form');
-var mapActivator = document.querySelector('.map__pin--main');
-var inputAddress = userForm.querySelector('input[name=address]');
-var formsElement = document.querySelectorAll('form');
 var coordinatePinStart = {
   x: Math.round((mapOverlay.offsetWidth / 2) + (mapActivator.offsetWidth / 2)),
   y: Math.round((mapOverlay.offsetHeight / 2) + (mapActivator.offsetHeight / 2))
@@ -124,7 +124,7 @@ var coordinatePinStart = {
 var getCoordinatePin = function (element) {
   // var x = Math.round(element.getBoundingClientRect().left - (element.offsetWidth / 2));
   // var y = Math.round(element.getBoundingClientRect().top);
-  var x = Math.round(element.offsetLeft);
+  var x = Math.round(element.offsetLeft + mapActivator.offsetWidth / 2);
   var y = Math.round(element.getBoundingClientRect().top);
   return (x + ',' + y);
 };
@@ -228,24 +228,38 @@ var onPinDown = function (evt) {
         x: element.offsetLeft,
         y: element.offsetTop
       };
+      // if (elementCoordinate.y < LIMIT_PIN_TOP) {
+      //   elementCoordinate.y = LIMIT_PIN_TOP;
+      // } else if (elementCoordinate.y > LIMIT_PIN_BOTTOM) {
+      //   elementCoordinate.y = LIMIT_PIN_BOTTOM - 5;
+      // } else if (elementCoordinate.x < LIMIT_PIN_LEFT) {
+      //   elementCoordinate.x = LIMIT_PIN_LEFT;
+      // } else if (element.offsetLeft > LIMIT_PIN_RIGHT) {
+      //   elementCoordinate.x = LIMIT_PIN_RIGHT - 5;
+      // } else {
+      //   elementCoordinate.y = element.offsetTop - shift.y;
+      //   elementCoordinate.x = element.offsetLeft - shift.x;
+      // }
+      elementCoordinate.y = element.offsetTop - shift.y;
+      elementCoordinate.x = element.offsetLeft - shift.x;
       if (elementCoordinate.y < LIMIT_PIN_TOP) {
         elementCoordinate.y = LIMIT_PIN_TOP;
-      } else if (elementCoordinate.y > LIMIT_PIN_BOTTOM) {
-        elementCoordinate.y = LIMIT_PIN_BOTTOM - 5;
-      } else if (elementCoordinate.x < LIMIT_PIN_LEFT) {
+      }
+      if (elementCoordinate.y > LIMIT_PIN_BOTTOM) {
+        elementCoordinate.y = LIMIT_PIN_BOTTOM;
+      }
+      if (elementCoordinate.x < LIMIT_PIN_LEFT) {
         elementCoordinate.x = LIMIT_PIN_LEFT;
-      } else if (element.offsetLeft > LIMIT_PIN_RIGHT) {
-        elementCoordinate.x = LIMIT_PIN_RIGHT - 5;
-      } else {
-        elementCoordinate.y = element.offsetTop - shift.y;
-        elementCoordinate.x = element.offsetLeft - shift.x;
+      }
+      if (element.offsetLeft > LIMIT_PIN_RIGHT) {
+        elementCoordinate.x = LIMIT_PIN_RIGHT;
       }
       return elementCoordinate;
     };
 
     var moveElement = function () {
+      mapActivator.style.cursor = 'pointer';
       var newCoordinate = checkLimitPin(mapActivator);
-      console.log(newCoordinate);
       mapActivator.style.left = newCoordinate.x + 'px';
       mapActivator.style.top = newCoordinate.y + 'px';
     };
