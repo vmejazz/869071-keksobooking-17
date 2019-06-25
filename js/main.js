@@ -260,3 +260,48 @@ var onPinDown = function (evt) {
 };
 
 mapActivator.addEventListener('mousedown', onPinDown, true);
+
+// ---------------------------------------------------------- Валидация количества комнат
+
+var inputRoomNumber = document.querySelector('#room_number');
+var inputCapacity = document.querySelector('#capacity');
+
+var inputRoomNumberDisable = function () {
+  for (var i = 0; i < inputCapacity.children.length; i++) {
+    inputCapacity.children[i].disabled = true;
+  }
+};
+
+var inputRoomNumberEnable = function (room) {
+  inputCapacity.children[room].disabled = false;
+  return;
+};
+
+var checkInputCapacity = function (roomNumber) {
+  inputRoomNumberDisable();
+  switch (roomNumber) {
+    case '1':
+      inputRoomNumberEnable(2);
+      break;
+    case '2':
+      inputRoomNumberEnable(2);
+      inputRoomNumberEnable(1);
+      break;
+    case '3':
+      inputRoomNumberEnable(2);
+      inputRoomNumberEnable(1);
+      inputRoomNumberEnable(0);
+      break;
+    case '100':
+      inputRoomNumberEnable(3);
+      break;
+    default:
+      return;
+  }
+};
+
+
+inputRoomNumber.addEventListener('change', function (evt) {
+  var roomNuberChousen = evt.target.value;
+  checkInputCapacity(roomNuberChousen);
+});
