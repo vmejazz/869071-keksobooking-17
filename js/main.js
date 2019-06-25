@@ -119,8 +119,9 @@ var coordinatePinStart = {
 };
 
 var getCoordinatePin = function (element) {
-  var x = Math.round(element.getBoundingClientRect().left + (element.offsetWidth / 2));
-  var y = Math.round(element.getBoundingClientRect().top + element.offsetHeight);
+  var x = Math.round(element.offsetLeft + mapActivator.offsetWidth / 2);
+  var y = Math.round(element.getBoundingClientRect().top);
+
   return (x + ',' + y);
 };
 
@@ -143,3 +144,116 @@ mapActivator.addEventListener('click', function () {
 
 changeStateElementsForm(true);
 inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+
+// module5-task1 ------------------------------------------ module5-task1
+
+var typeOfRoom = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var MIN_PRICE_FOR_ROOM = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+var getMinPriceForRoom = function (selectedRoom) {
+  return MIN_PRICE_FOR_ROOM[selectedRoom];
+};
+
+var chouseTypeOfRoom = function (evtItem) {
+  var newMinValue = getMinPriceForRoom(evtItem.value);
+  priceInput.setAttribute('min', newMinValue);
+  priceInput.setAttribute('placeholder', newMinValue);
+};
+
+typeOfRoom.addEventListener('click', function (evt) {
+  chouseTypeOfRoom(evt.target);
+}, true);
+
+// --------------------------------------------------------- замена время выезда/въезда
+
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+
+var setSyncTimeInOut = function (target, timeEvn) {
+  if (timeEvn === 'In') {
+    timeOut.value = target.value;
+  }
+  timeIn.value = target.value;
+};
+
+timeIn.addEventListener('change', function (evt) {
+  setSyncTimeInOut(evt.target, 'In');
+});
+
+timeOut.addEventListener('change', function (evt) {
+  setSyncTimeInOut(evt.target, 'Out');
+});
+
+// ------------------------------------------------------------ Перетаскиваем маркер
+
+
+var onPinDown = function (evt) {
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onPinMoveOnMap = function (moveEvt) {
+
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var checkLimitPin = function (element) {
+      var elementCoordinate = {
+        x: element.offsetLeft - shift.x,
+        y: element.offsetTop - shift.y
+      };
+
+      if (element.offsetTop - shift.y < LIMIT_PIN_TOP) {
+        elementCoordinate.y = LIMIT_PIN_TOP;
+      }
+      if (element.offsetTop - shift.y > LIMIT_PIN_BOTTOM) {
+        elementCoordinate.y = LIMIT_PIN_BOTTOM;
+      }
+      if (element.offsetLeft - shift.x < LIMIT_PIN_LEFT) {
+        elementCoordinate.x = LIMIT_PIN_LEFT;
+      }
+      if (element.offsetLeft - shift.x > LIMIT_PIN_RIGHT) {
+        elementCoordinate.x = LIMIT_PIN_RIGHT;
+      }
+      return elementCoordinate;
+    };
+
+    var moveElement = function () {
+      mapActivator.style.cursor = 'pointer';
+      var newCoordinate = checkLimitPin(mapActivator);
+      mapActivator.style.left = newCoordinate.x + 'px';
+      mapActivator.style.top = newCoordinate.y + 'px';
+    };
+
+    moveElement();
+  };
+
+  var onPinUpOnMap = function () {
+    inputAddress.value = getCoordinatePin(mapActivator);
+    document.removeEventListener('mousemove', onPinMoveOnMap);
+    document.removeEventListener('mouseup', onPinUpOnMap);
+  };
+
+  document.addEventListener('mousemove', onPinMoveOnMap);
+  document.addEventListener('mouseup', onPinUpOnMap);
+};
+
+document.addEventListener('mousedown', onPinDown, true);
+
