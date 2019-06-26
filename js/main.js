@@ -135,17 +135,6 @@ var changeStateElementsForm = function (toggle) {
   }
 };
 
-var getMapActiveStatus = function () {
-  mapStatus.classList.remove('map--faded');
-  mapActivator.removeEventListener('click', getMapActiveStatus);
-  changeStateElementsForm(false);
-  userForm.classList.remove('ad-form--disabled');
-  mapPinsElement.appendChild(fragment);
-  inputAddress.value = getCoordinatePin(mapActivator);
-};
-
-mapActivator.addEventListener('click', getMapActiveStatus);
-
 changeStateElementsForm(true);
 inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
 
@@ -317,4 +306,14 @@ inputRoomNumber.addEventListener('change', function (evt) {
   checkInputCapacity(roomNuberChousen);
 });
 
-setMinInputCapacity(checkInputCapacity(inputRoomNumber.value));
+var getMapActiveStatus = function () {
+  mapStatus.classList.remove('map--faded');
+  mapActivator.removeEventListener('click', getMapActiveStatus);
+  changeStateElementsForm(false);
+  userForm.classList.remove('ad-form--disabled');
+  mapPinsElement.appendChild(fragment);
+  inputAddress.value = getCoordinatePin(mapActivator);
+  checkInputCapacity(inputRoomNumber.value);
+};
+
+mapActivator.addEventListener('click', getMapActiveStatus);
