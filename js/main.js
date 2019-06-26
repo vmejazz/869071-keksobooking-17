@@ -170,9 +170,11 @@ var chouseTypeOfRoom = function (evtItem) {
   priceInput.setAttribute('placeholder', newMinValue);
 };
 
-typeOfRoom.addEventListener('click', function (evt) {
+typeOfRoom.addEventListener('change', function (evt) {
   chouseTypeOfRoom(evt.target);
 }, true);
+
+priceInput.setAttribute('min', getMinPriceForRoom(typeOfRoom.value));
 
 // --------------------------------------------------------- замена время выезда/въезда
 
@@ -270,10 +272,16 @@ var inputRoomNumberDisable = function () {
   for (var i = 0; i < inputCapacity.children.length; i++) {
     inputCapacity.children[i].disabled = true;
   }
+  return;
 };
 
 var inputRoomNumberEnable = function (room) {
   inputCapacity.children[room].disabled = false;
+  return;
+};
+
+var setMinInputCapacity = function (guest) {
+  inputCapacity.value = inputCapacity.children[guest].value;
   return;
 };
 
@@ -282,26 +290,31 @@ var checkInputCapacity = function (roomNumber) {
   switch (roomNumber) {
     case '1':
       inputRoomNumberEnable(2);
+      setMinInputCapacity(2);
       break;
     case '2':
       inputRoomNumberEnable(2);
       inputRoomNumberEnable(1);
+      setMinInputCapacity(1);
       break;
     case '3':
       inputRoomNumberEnable(2);
       inputRoomNumberEnable(1);
       inputRoomNumberEnable(0);
+      setMinInputCapacity(0);
       break;
     case '100':
       inputRoomNumberEnable(3);
+      setMinInputCapacity(3);
       break;
     default:
       return;
   }
 };
 
-
 inputRoomNumber.addEventListener('change', function (evt) {
   var roomNuberChousen = evt.target.value;
   checkInputCapacity(roomNuberChousen);
 });
+
+setMinInputCapacity(checkInputCapacity(inputRoomNumber.value));
