@@ -269,10 +269,10 @@ var inputRoomNumberEnable = function (room) {
   return;
 };
 
-var setMinInputCapacity = function (guest) {
-  inputCapacity.value = inputCapacity.children[guest].value;
-  return;
-};
+// var setMinInputCapacity = function (guest) {
+//   inputCapacity.value = inputCapacity.children[guest].value;
+//   return;
+// };
 
 var checkInputCapacity = function (roomNumber) {
   inputRoomNumberDisable();
@@ -301,10 +301,10 @@ var checkInputCapacity = function (roomNumber) {
   }
 };
 
-inputRoomNumber.addEventListener('change', function (evt) {
-  var roomNuberChousen = evt.target.value;
-  checkInputCapacity(roomNuberChousen);
-});
+// inputRoomNumber.addEventListener('change', function (evt) {
+//   var roomNuberChousen = evt.target.value;
+//   checkInputCapacity(roomNuberChousen);
+// });
 
 var getMapActiveStatus = function () {
   mapStatus.classList.remove('map--faded');
@@ -313,7 +313,71 @@ var getMapActiveStatus = function () {
   userForm.classList.remove('ad-form--disabled');
   mapPinsElement.appendChild(fragment);
   inputAddress.value = getCoordinatePin(mapActivator);
-  checkInputCapacity(inputRoomNumber.value);
+  // checkInputCapacity(inputRoomNumber.value);
 };
 
 mapActivator.addEventListener('click', getMapActiveStatus);
+
+
+// -------------------------------- Валидация количества гостей
+
+var onFormSubmitButton = document.querySelector('.ad-form__submit');
+
+var messageOfRoomsNumbers = function (roomsValue) {
+  var message = 'Неверное количество мест для гостей! Максимальное количество гостей выбранного размещения - ';
+  if (roomsValue === 1) {
+    return message + roomsValue + ' гость';
+  } else if (roomsValue === 2 || roomsValue === 3) {
+    return message + roomsValue + ' гостей';
+  } else {
+    return 'Неверное количество мест для гостей! Выберите \'не для гостей\'';
+  }
+};
+
+var getErrorInputGuest = function (num) {
+  inputCapacity.setCustomValidity(messageOfRoomsNumbers(num));
+  inputCapacity.style.background = '#f17575';
+};
+
+var getValidatedInputGuest = function () {
+  inputCapacity.setCustomValidity('');
+  inputCapacity.style.background = '';
+};
+
+var validateInputGuest = function (evt) {
+  switch (+inputRoomNumber.value) {
+    case 1:
+      if (Number(inputCapacity.value) !== 1) {
+        getErrorInputGuest(1);
+      } else {
+        getValidatedInputGuest();
+      }
+      break;
+    case 2:
+      if (Number(inputCapacity.value) === 3 || Number(inputCapacity.value) === 0) {
+        getErrorInputGuest(2);
+      } else {
+        getValidatedInputGuest();
+      }
+      break;
+    case 3:
+      if (Number(inputCapacity.value) === 0) {
+        getErrorInputGuest(3);
+      } else {
+        getValidatedInputGuest();
+      }
+      break;
+    case 100:
+      if (Number(inputCapacity.value) !== 0) {
+        getErrorInputGuest(0);
+      } else {
+        getValidatedInputGuest();
+      }
+      break;
+    default:
+      getValidatedInputGuest();
+  }
+};
+
+inputCapacity.addEventListener('change', validateInputGuest);
+onFormSubmitButton.addEventListener('click', validateInputGuest);
