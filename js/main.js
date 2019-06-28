@@ -110,9 +110,6 @@ for (var k = 0; k < arrayPins.length; k++) {
   fragment.appendChild(renderPin(arrayPins[k]));
 }
 
-// mapPinsElement.appendChild(fragment); // добавлем созданные пины на карту
-
-
 // module4-task1  -------------------------------------------------------------
 
 
@@ -257,55 +254,6 @@ mapActivator.addEventListener('mousedown', onPinDown, true);
 var inputRoomNumber = document.querySelector('#room_number');
 var inputCapacity = document.querySelector('#capacity');
 
-var inputRoomNumberDisable = function () {
-  for (var i = 0; i < inputCapacity.children.length; i++) {
-    inputCapacity.children[i].disabled = true;
-  }
-  return;
-};
-
-var inputRoomNumberEnable = function (room) {
-  inputCapacity.children[room].disabled = false;
-  return;
-};
-
-// var setMinInputCapacity = function (guest) {
-//   inputCapacity.value = inputCapacity.children[guest].value;
-//   return;
-// };
-
-var checkInputCapacity = function (roomNumber) {
-  inputRoomNumberDisable();
-  switch (roomNumber) {
-    case '1':
-      inputRoomNumberEnable(2);
-      setMinInputCapacity(2);
-      break;
-    case '2':
-      inputRoomNumberEnable(2);
-      inputRoomNumberEnable(1);
-      setMinInputCapacity(1);
-      break;
-    case '3':
-      inputRoomNumberEnable(2);
-      inputRoomNumberEnable(1);
-      inputRoomNumberEnable(0);
-      setMinInputCapacity(0);
-      break;
-    case '100':
-      inputRoomNumberEnable(3);
-      setMinInputCapacity(3);
-      break;
-    default:
-      return;
-  }
-};
-
-// inputRoomNumber.addEventListener('change', function (evt) {
-//   var roomNuberChousen = evt.target.value;
-//   checkInputCapacity(roomNuberChousen);
-// });
-
 var getMapActiveStatus = function () {
   mapStatus.classList.remove('map--faded');
   mapActivator.removeEventListener('click', getMapActiveStatus);
@@ -313,7 +261,6 @@ var getMapActiveStatus = function () {
   userForm.classList.remove('ad-form--disabled');
   mapPinsElement.appendChild(fragment);
   inputAddress.value = getCoordinatePin(mapActivator);
-  // checkInputCapacity(inputRoomNumber.value);
 };
 
 mapActivator.addEventListener('click', getMapActiveStatus);
@@ -325,12 +272,14 @@ var onFormSubmitButton = document.querySelector('.ad-form__submit');
 
 var messageOfRoomsNumbers = function (roomsValue) {
   var message = 'Неверное количество мест для гостей! Максимальное количество гостей выбранного размещения - ';
-  if (roomsValue === 1) {
-    return message + roomsValue + ' гость';
-  } else if (roomsValue === 2 || roomsValue === 3) {
-    return message + roomsValue + ' гостей';
-  } else {
-    return 'Неверное количество мест для гостей! Выберите \'не для гостей\'';
+  switch (roomsValue) {
+    case 1:
+      return message + roomsValue + ' гость';
+    case 2:
+    case 3:
+      return message + roomsValue + ' гостей';
+    default:
+      return 'Неверное количество мест для гостей! Выберите \'не для гостей\'';
   }
 };
 
@@ -344,40 +293,69 @@ var getValidatedInputGuest = function () {
   inputCapacity.style.background = '';
 };
 
-var validateInputGuest = function (evt) {
-  switch (+inputRoomNumber.value) {
+var checkInputCapacity = function (guestNumber, roomNumberOne, roomNumberTwo, roomNumberTree) {
+  if (Number(inputCapacity.value) === roomNumberOne || Number(inputCapacity.value) === roomNumberTwo || Number(inputCapacity.value) === roomNumberTree) {
+    getValidatedInputGuest();
+  } else {
+    getErrorInputGuest(guestNumber);
+  }
+};
+
+var validateInputGuest = function () {
+  switch (Number(inputRoomNumber.value)) {
     case 1:
-      if (Number(inputCapacity.value) !== 1) {
-        getErrorInputGuest(1);
-      } else {
-        getValidatedInputGuest();
-      }
+      checkInputCapacity(1, 1);
       break;
     case 2:
-      if (Number(inputCapacity.value) === 3 || Number(inputCapacity.value) === 0) {
-        getErrorInputGuest(2);
-      } else {
-        getValidatedInputGuest();
-      }
+      checkInputCapacity(2, 2, 1);
       break;
     case 3:
-      if (Number(inputCapacity.value) === 0) {
-        getErrorInputGuest(3);
-      } else {
-        getValidatedInputGuest();
-      }
+      checkInputCapacity(3, 3, 2, 1);
       break;
     case 100:
-      if (Number(inputCapacity.value) !== 0) {
-        getErrorInputGuest(0);
-      } else {
-        getValidatedInputGuest();
-      }
+      checkInputCapacity(0, 0);
       break;
     default:
       getValidatedInputGuest();
   }
 };
+
+//  старый вариант валидации, где много IF
+//
+// var validateInputGuest = function () {
+//   switch (+inputRoomNumber.value) {
+//     case 1:
+//       if (Number(inputCapacity.value) !== 1) {
+//         getErrorInputGuest(1);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 2:
+//       if (Number(inputCapacity.value) === 3 || Number(inputCapacity.value) === 0) {
+//         getErrorInputGuest(2);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 3:
+//       if (Number(inputCapacity.value) === 0) {
+//         getErrorInputGuest(3);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 100:
+//       if (Number(inputCapacity.value) !== 0) {
+//         getErrorInputGuest(0);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     default:
+//       getValidatedInputGuest();
+//   }
+// };
 
 inputCapacity.addEventListener('change', validateInputGuest);
 onFormSubmitButton.addEventListener('click', validateInputGuest);
