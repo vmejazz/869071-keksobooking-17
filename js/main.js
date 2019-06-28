@@ -1,21 +1,28 @@
 'use strict';
 
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
-var PINS_COUNT = 8;
-
 var mapStatus = document.querySelector('.map');
-// mapStatus.classList.remove('map--faded'); // переводим блок карты в активное состояние
 
 var mapOverlay = document.querySelector('.map__overlay');
-// var mapOverlayWidth = mapOverlay.offsetWidth;
-// var mapOverlayHeight = mapOverlay.offsetHeight;
 
 var mapPinsElement = document.querySelector('.map__pins');
 
 var mapPinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
+
+var userForm = document.querySelector('.ad-form');
+var mapActivator = document.querySelector('.map__pin--main');
+var inputAddress = userForm.querySelector('input[name=address]');
+var formsElement = document.querySelectorAll('form');
+
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var PINS_COUNT = 8;
+var LIMIT_PIN_TOP = 130;
+var LIMIT_PIN_BOTTOM = 630;
+var LIMIT_PIN_LEFT = -(mapActivator.offsetWidth / 2);
+var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - (mapActivator.offsetWidth / 2);
+
 
 var getRandomArbitrary = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -69,8 +76,8 @@ var getPinProperty = function (i) {
       },
     'location':
       {
-        'x': getRandomArbitrary(0, mapOverlay.offsetWidth - (PIN_WIDTH * 2)),
-        'y': getRandomArbitrary(130, 630)
+        'x': getRandomArbitrary(LIMIT_PIN_LEFT, LIMIT_PIN_RIGHT),
+        'y': getRandomArbitrary(LIMIT_PIN_TOP, LIMIT_PIN_BOTTOM)
       }
   };
   return pinProperty;
@@ -103,16 +110,9 @@ for (var k = 0; k < arrayPins.length; k++) {
   fragment.appendChild(renderPin(arrayPins[k]));
 }
 
-// mapPinsElement.appendChild(fragment); // добавлем созданные пины на карту
-
-
 // module4-task1  -------------------------------------------------------------
 
 
-var userForm = document.querySelector('.ad-form');
-var mapActivator = document.querySelector('.map__pin--main');
-var inputAddress = userForm.querySelector('input[name=address]');
-var formsElement = document.querySelectorAll('form');
 var coordinatePinStart = {
   x: Math.round((mapOverlay.offsetWidth / 2) + (mapActivator.offsetWidth / 2)),
   y: Math.round((mapOverlay.offsetHeight / 2) + (mapActivator.offsetHeight / 2))
@@ -121,7 +121,6 @@ var coordinatePinStart = {
 var getCoordinatePin = function (element) {
   var x = Math.round(element.offsetLeft + mapActivator.offsetWidth / 2);
   var y = Math.round(element.getBoundingClientRect().top);
-
   return (x + ',' + y);
 };
 
@@ -132,15 +131,6 @@ var changeStateElementsForm = function (toggle) {
     }
   }
 };
-
-mapActivator.addEventListener('click', function () {
-  mapStatus.classList.remove('map--faded');
-  mapActivator.removeEventListener('click', function () {});
-  changeStateElementsForm(false);
-  userForm.classList.remove('ad-form--disabled');
-  mapPinsElement.appendChild(fragment);
-  inputAddress.value = getCoordinatePin(mapActivator);
-});
 
 changeStateElementsForm(true);
 inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
@@ -166,9 +156,11 @@ var chouseTypeOfRoom = function (evtItem) {
   priceInput.setAttribute('placeholder', newMinValue);
 };
 
-typeOfRoom.addEventListener('click', function (evt) {
+typeOfRoom.addEventListener('change', function (evt) {
   chouseTypeOfRoom(evt.target);
 }, true);
+
+priceInput.setAttribute('min', getMinPriceForRoom(typeOfRoom.value));
 
 // --------------------------------------------------------- замена время выезда/въезда
 
@@ -255,5 +247,115 @@ var onPinDown = function (evt) {
   document.addEventListener('mouseup', onPinUpOnMap);
 };
 
-document.addEventListener('mousedown', onPinDown, true);
+mapActivator.addEventListener('mousedown', onPinDown, true);
 
+// ---------------------------------------------------------- Валидация количества комнат
+
+var inputRoomNumber = document.querySelector('#room_number');
+var inputCapacity = document.querySelector('#capacity');
+
+var getMapActiveStatus = function () {
+  mapStatus.classList.remove('map--faded');
+  mapActivator.removeEventListener('click', getMapActiveStatus);
+  changeStateElementsForm(false);
+  userForm.classList.remove('ad-form--disabled');
+  mapPinsElement.appendChild(fragment);
+  inputAddress.value = getCoordinatePin(mapActivator);
+};
+
+mapActivator.addEventListener('click', getMapActiveStatus);
+
+
+// -------------------------------- Валидация количества гостей
+
+var onFormSubmitButton = document.querySelector('.ad-form__submit');
+
+var messageOfRoomsNumbers = function (roomsValue) {
+  var message = 'Неверное количество мест для гостей! Максимальное количество гостей выбранного размещения - ';
+  switch (roomsValue) {
+    case 1:
+      return message + roomsValue + ' гость';
+    case 2:
+    case 3:
+      return message + roomsValue + ' гостей';
+    default:
+      return 'Неверное количество мест для гостей! Выберите \'не для гостей\'';
+  }
+};
+
+var getErrorInputGuest = function (num) {
+  inputCapacity.setCustomValidity(messageOfRoomsNumbers(num));
+  inputCapacity.style.background = '#f17575';
+};
+
+var getValidatedInputGuest = function () {
+  inputCapacity.setCustomValidity('');
+  inputCapacity.style.background = '';
+};
+
+var checkInputCapacity = function (guestNumber, roomNumberOne, roomNumberTwo, roomNumberTree) {
+  if (Number(inputCapacity.value) === roomNumberOne || Number(inputCapacity.value) === roomNumberTwo || Number(inputCapacity.value) === roomNumberTree) {
+    getValidatedInputGuest();
+  } else {
+    getErrorInputGuest(guestNumber);
+  }
+};
+
+var validateInputGuest = function () {
+  switch (Number(inputRoomNumber.value)) {
+    case 1:
+      checkInputCapacity(1, 1);
+      break;
+    case 2:
+      checkInputCapacity(2, 2, 1);
+      break;
+    case 3:
+      checkInputCapacity(3, 3, 2, 1);
+      break;
+    case 100:
+      checkInputCapacity(0, 0);
+      break;
+    default:
+      getValidatedInputGuest();
+  }
+};
+
+//  старый вариант валидации, где много IF
+//
+// var validateInputGuest = function () {
+//   switch (+inputRoomNumber.value) {
+//     case 1:
+//       if (Number(inputCapacity.value) !== 1) {
+//         getErrorInputGuest(1);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 2:
+//       if (Number(inputCapacity.value) === 3 || Number(inputCapacity.value) === 0) {
+//         getErrorInputGuest(2);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 3:
+//       if (Number(inputCapacity.value) === 0) {
+//         getErrorInputGuest(3);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     case 100:
+//       if (Number(inputCapacity.value) !== 0) {
+//         getErrorInputGuest(0);
+//       } else {
+//         getValidatedInputGuest();
+//       }
+//       break;
+//     default:
+//       getValidatedInputGuest();
+//   }
+// };
+
+inputCapacity.addEventListener('change', validateInputGuest);
+onFormSubmitButton.addEventListener('click', validateInputGuest);
