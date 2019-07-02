@@ -109,7 +109,7 @@
   inputCapacity.addEventListener('change', validateInputGuest);
   onFormSubmitButton.addEventListener('click', validateInputGuest);
 
-  // ------------- отсыл формы
+  // ------------------ отсыл формы
 
   var submitForm = document.querySelector('.ad-form');
 
