@@ -3,8 +3,6 @@
 (function () {
   var mapStatus = document.querySelector('.map');
 
-  var mapPinsElement = document.querySelector('.map__pins');
-
   var formsElement = document.querySelectorAll('form');
 
   // Адрес и активация центрального маркера  -------------------------------------------------------------
@@ -36,7 +34,7 @@
     window.data.mapActivator.removeEventListener('click', getMapActiveStatus);
     changeStateElementsForm(false);
     window.data.userForm.classList.remove('ad-form--disabled');
-    mapPinsElement.appendChild(window.render.fragment);
+    window.backEnd.load(window.render.addPinsOnMap, window.render.onErrorLoad);
     window.data.inputAddress.value = getCoordinatePin(window.data.mapActivator);
   };
 

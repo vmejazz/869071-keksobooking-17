@@ -109,4 +109,15 @@
   inputCapacity.addEventListener('change', validateInputGuest);
   onFormSubmitButton.addEventListener('click', validateInputGuest);
 
+  // ------------- отсыл формы
+
+  var submitForm = document.querySelector('.ad-form');
+
+  submitForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backEnd.sendForm(new FormData(submitForm), window.render.onSuccessSend, window.render.onErrorSend);
+  });
+
 })();
+
+
