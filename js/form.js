@@ -115,7 +115,7 @@
 
   submitForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backEnd.sendForm(new FormData(submitForm), window.render.onSuccessSend, window.render.onErrorSend);
+    window.backEnd.sendData(new FormData(submitForm), window.render.onSuccessSend, window.render.onErrorSend);
   });
 
 })();

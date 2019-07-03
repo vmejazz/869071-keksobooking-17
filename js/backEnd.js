@@ -1,50 +1,59 @@
 'use strict';
 
 (function () {
-  var load = function (onSuccess, onError) {
-    var URL = 'https://js.dump.academy/keksobooking/data';
+  var ANSWER_OK = 200;
+  var ANSWER_NOT_FOUND = 404;
+  var ANSWER_INTERNAL_SERVER = 500;
+  var ANSWER_SERVER_ON_REBUILD = 503;
 
+  var xhrRequestJson = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case 200:
+        case ANSWER_OK:
           onSuccess(xhr.response);
+          break;
+        case ANSWER_NOT_FOUND:
+          onError('Статус ответа: ' + xhr.status + ' Ошибка, страницы не существует');
+          break;
+        case ANSWER_INTERNAL_SERVER:
+          onError('Статус ответа: ' + xhr.status + ' Ошибка на сервере');
+          break;
+        case ANSWER_SERVER_ON_REBUILD:
+          onError('Статус ответа: ' + xhr.status + ' Производятся работы на сервере');
           break;
         default:
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
-    xhr.open('GET', URL);
-    xhr.send();
+    return xhr;
+  };
+
+  var loadData = function (onSuccess, onError) {
+    var URL = 'https://js.dump.academy/keksobooking/data';
+
+    var xhrJson = xhrRequestJson(onSuccess, onError);
+
+    xhrJson.open('GET', URL);
+    xhrJson.send();
 
   };
 
-  var sendForm = function (data, onSuccess, onError) {
+  var sendData = function (data, onSuccess, onError) {
     var URL = 'https://js.dump.academy/keksobooking';
 
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+    var xhrJson = xhrRequestJson(onSuccess, onError);
 
-    xhr.addEventListener('load', function () {
-      switch (xhr.status) {
-        case 200:
-          onSuccess(xhr.response);
-          break;
-        default:
-          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-
-    xhr.open('POST', URL);
-    xhr.send(data);
+    xhrJson.open('POST', URL);
+    xhrJson.send(data);
   };
 
   window.backEnd = {
-    'load': load,
-    'sendForm': sendForm
+    'loadData': loadData,
+    'sendData': sendData
   };
 
 })();

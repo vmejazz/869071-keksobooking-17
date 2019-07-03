@@ -55,18 +55,53 @@
     setTimeout(hideElement, 1500);
   };
 
-  var onSuccessSend = function () {
+  var createModal = function (elem) {
     var fragment = document.createDocumentFragment();
 
-    fragment.appendChild(successTemplate);
+    fragment.appendChild(elem);
     document.querySelector('main').appendChild(fragment);
   };
 
-  var onErrorSend = function () {
-    var fragment = document.createDocumentFragment();
+  var onModal = function (elem) {
+    elem.addEventListener('click', function () {
+      closeModal(elem);
+    });
+  };
 
-    fragment.appendChild(errorTemplate);
-    document.querySelector('main').appendChild(fragment);
+  var closeModal = function (elem) {
+    elem.remove();
+  };
+
+  var escEventClose = function (elem) {
+    document.addEventListener('keydown', function (evt) {
+      window.util.isEscEvent(evt, closeModal, elem);
+    });
+  };
+
+  var onSuccessSend = function () {
+    window.main.resetPage();
+    createModal(successTemplate);
+    var successModal = document.querySelector('.success');
+
+    onModal(successModal);
+    escEventClose(successModal);
+  };
+
+  // var acceptEditForm = function (button, closeElem) {
+  //   var replayButton = closeElem.querySelector(button);
+  //   replayButton.addEventListener('click', function () {
+  //     closeModal(closeElem);
+  //   });
+  // };
+
+  var onErrorSend = function () {
+    createModal(errorTemplate);
+    var errorModal = document.querySelector('.error');
+
+    // acceptEditForm('.error__button', errorModal);
+
+    onModal(errorModal);
+    escEventClose(errorModal);
   };
 
 
