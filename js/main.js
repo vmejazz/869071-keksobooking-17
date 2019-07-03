@@ -64,8 +64,32 @@
     resetPins();
   };
 
+  // ---------- Деактивация страницы
+
+  var getMapDeactiveStatus = function () {
+    mapStatus.classList.add('map--faded');
+    changeStateElementsForm(true);
+    window.data.userForm.classList.add('ad-form--disabled');
+    window.data.mapActivator.addEventListener('click', getMapActiveStatus);
+    window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+  };
+
+  //  ----------- Ресет страницы
+
+  var onResetPageButton = function () {
+    resetPage();
+    getMapDeactiveStatus();
+  };
+
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', onResetPageButton);
+
+  // ------ Глобальные переменные
+
   window.main = {
     'getCoordinatePin': getCoordinatePin,
-    'resetPage': resetPage
+    'resetPage': resetPage,
+    'mapStatus': mapStatus,
+    'getMapDeactiveStatus': getMapDeactiveStatus
   };
 })();

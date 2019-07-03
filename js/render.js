@@ -85,6 +85,7 @@
 
     onModal(successModal);
     escEventClose(successModal);
+    window.main.getMapDeactiveStatus();
   };
 
   // var acceptEditForm = function (button, closeElem) {
