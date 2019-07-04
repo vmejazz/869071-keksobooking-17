@@ -53,7 +53,8 @@
     for (var i = 1; i < pins.length; i++) {
       pins[i].remove();
     }
-    pins[0].style.left = coordinatePinStart.x + 'px';
+    console.log(window.data.mapActivator.offsetWidth);
+    pins[0].style.left = coordinatePinStart.x - (window.data.mapActivator.offsetWidth ) + 'px';
     pins[0].style.top = coordinatePinStart.y + 'px';
     document.querySelector('.map__pins').appendChild(pins[0]);
     window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
@@ -90,6 +91,7 @@
     'getCoordinatePin': getCoordinatePin,
     'resetPage': resetPage,
     'mapStatus': mapStatus,
-    'getMapDeactiveStatus': getMapDeactiveStatus
+    'getMapDeactiveStatus': getMapDeactiveStatus,
+    'resetPins': resetPins
   };
 })();
