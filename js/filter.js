@@ -6,10 +6,13 @@
   var filterTypeofHouse = function (filterValue) {
     window.main.resetPins();
     var arrayPins = window.backEnd.loadedData.allPins;
+    if (filterValue === 'any') {
+      return window.render.addPinsOnMap(arrayPins);
+    }
     var newArrayPins = arrayPins.filter(function (elem) {
       return elem.offer.type === filterValue;
     });
-    window.render.addPinsOnMap(newArrayPins);
+    return window.render.addPinsOnMap(newArrayPins);
   };
 
   var refreshPins = function (evt) {
