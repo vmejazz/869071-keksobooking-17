@@ -73,7 +73,7 @@
   };
 
   var escEventClose = function (elem) {
-    document.addEventListener('keydown', function (evt) {
+    window.addEventListener('keydown', function (evt) {
       window.util.isEscEvent(evt, closeModal, elem);
     });
   };
@@ -84,6 +84,7 @@
     var successModal = document.querySelector('.success');
 
     onModal(successModal);
+    document.activeElement.blur();
     escEventClose(successModal);
     window.main.getMapDeactiveStatus();
   };

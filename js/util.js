@@ -23,13 +23,13 @@
   };
 
   var isEscEvent = function (evt, action, modal) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === ESC_KEYCODE || evt.which === ESC_KEYCODE) {
       action(modal);
     }
   };
 
   var isEnterEvent = function (evt, action) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === ENTER_KEYCODE || evt.which === ENTER_KEYCODE) {
       action();
     }
   };
