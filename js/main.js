@@ -3,8 +3,6 @@
 (function () {
   var mapStatus = document.querySelector('.map');
 
-  var mapPinsElement = document.querySelector('.map__pins');
-
   var formsElement = document.querySelectorAll('form');
 
   // Адрес и активация центрального маркера  -------------------------------------------------------------
@@ -36,13 +34,62 @@
     window.data.mapActivator.removeEventListener('click', getMapActiveStatus);
     changeStateElementsForm(false);
     window.data.userForm.classList.remove('ad-form--disabled');
-    mapPinsElement.appendChild(window.render.fragment);
+    window.backEnd.loadData(window.render.addPinsOnMap, window.render.onErrorLoad);
     window.data.inputAddress.value = getCoordinatePin(window.data.mapActivator);
   };
 
   window.data.mapActivator.addEventListener('click', getMapActiveStatus);
 
+  // --------- Сброс страницы
+
+  var resetForms = function (forms) {
+    for (var i = 0; i < forms.length; i++) {
+      forms[i].reset();
+    }
+  };
+
+  var resetPins = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
+    }
+    pins[0].style.left = coordinatePinStart.x + 'px';
+    pins[0].style.top = coordinatePinStart.y + 'px';
+    document.querySelector('.map__pins').appendChild(pins[0]);
+    window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+  };
+
+  var resetPage = function () {
+    resetForms(formsElement);
+    resetPins();
+  };
+
+  // ---------- Деактивация страницы
+
+  var getMapDeactiveStatus = function () {
+    mapStatus.classList.add('map--faded');
+    changeStateElementsForm(true);
+    window.data.userForm.classList.add('ad-form--disabled');
+    window.data.mapActivator.addEventListener('click', getMapActiveStatus);
+    window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+  };
+
+  //  ----------- Ресет страницы
+
+  var onResetPageButton = function () {
+    resetPage();
+    getMapDeactiveStatus();
+  };
+
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', onResetPageButton);
+
+  // ------ Глобальные переменные
+
   window.main = {
-    'getCoordinatePin': getCoordinatePin
+    'getCoordinatePin': getCoordinatePin,
+    'resetPage': resetPage,
+    'mapStatus': mapStatus,
+    'getMapDeactiveStatus': getMapDeactiveStatus
   };
 })();

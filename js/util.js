@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
+
   var getRandomArbitrary = function (min, max) {
     return Math.round(Math.random() * (max - min) + min);
   };
@@ -19,9 +22,23 @@
     return array;
   };
 
+  var isEscEvent = function (evt, action, modal) {
+    if (evt.keyCode === ESC_KEYCODE || evt.which === ESC_KEYCODE) {
+      action(modal);
+    }
+  };
+
+  var isEnterEvent = function (evt, action) {
+    if (evt.keyCode === ENTER_KEYCODE || evt.which === ENTER_KEYCODE) {
+      action();
+    }
+  };
+
   window.util = {
     'getRandomArbitrary': getRandomArbitrary,
     'getRandomItem': getRandomItem,
-    'getShakeArray': getShakeArray
+    'getShakeArray': getShakeArray,
+    'isEscEvent': isEscEvent,
+    'isEnterEvent': isEnterEvent
   };
 })();
