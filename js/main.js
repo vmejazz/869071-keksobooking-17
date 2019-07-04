@@ -53,8 +53,7 @@
     for (var i = 1; i < pins.length; i++) {
       pins[i].remove();
     }
-    console.log(window.data.mapActivator.offsetWidth);
-    pins[0].style.left = coordinatePinStart.x - (window.data.mapActivator.offsetWidth ) + 'px';
+    pins[0].style.left = coordinatePinStart.x - (window.data.mapActivator.offsetWidth) + 'px';
     pins[0].style.top = coordinatePinStart.y + 'px';
     document.querySelector('.map__pins').appendChild(pins[0]);
     window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
