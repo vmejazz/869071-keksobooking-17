@@ -5,6 +5,7 @@
   var ANSWER_NOT_FOUND = 404;
   var ANSWER_INTERNAL_SERVER = 500;
   var ANSWER_SERVER_ON_REBUILD = 503;
+  var loadedData = {};
 
   var xhrRequestJson = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -13,6 +14,7 @@
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case ANSWER_OK:
+          loadedData.allPins = xhr.response;
           onSuccess(xhr.response);
           break;
         case ANSWER_NOT_FOUND:
@@ -53,7 +55,8 @@
 
   window.backEnd = {
     'loadData': loadData,
-    'sendData': sendData
+    'sendData': sendData,
+    'loadedData': loadedData
   };
 
 })();
