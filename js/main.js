@@ -4,17 +4,18 @@
   var mapStatus = document.querySelector('.map');
 
   var formsElement = document.querySelectorAll('form');
+  // var mainPinElement = mapStatus.querySelector('.map__pin--main');
 
   // Адрес и активация центрального маркера  -------------------------------------------------------------
 
   var coordinatePinStart = {
-    x: Math.round((window.data.mapOverlay.offsetWidth / 2) + (window.data.mapActivator.offsetWidth / 2)),
-    y: Math.round((window.data.mapOverlay.offsetHeight / 2) + (window.data.mapActivator.offsetHeight / 2))
+    x: window.data.mapActivator.offsetLeft,
+    y: window.data.mapActivator.offsetTop
   };
 
   var getCoordinatePin = function (element) {
-    var x = Math.round(element.offsetLeft + window.data.mapActivator.offsetWidth / 2);
-    var y = Math.round(element.getBoundingClientRect().top);
+    var x = Math.round(element.offsetLeft + window.data.PIN_WIDTH / 2);
+    var y = Math.round(element.offsetTop + window.data.PIN_HEIGHT);
     return (x + ',' + y);
   };
 
@@ -27,7 +28,13 @@
   };
 
   changeStateElementsForm(true);
-  window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+
+  var coordinatePinForInput = {
+    x: Math.round(coordinatePinStart.x + (window.data.mapActivator.offsetWidth / 2)),
+    y: Math.round(coordinatePinStart.y + (window.data.mapActivator.offsetHeight / 2))
+  };
+
+  window.data.inputAddress.value = coordinatePinForInput.x + ',' + coordinatePinForInput.y;
 
   var getMapActiveStatus = function () {
     mapStatus.classList.remove('map--faded');
@@ -53,7 +60,7 @@
     for (var i = 1; i < pins.length; i++) {
       pins[i].remove();
     }
-    pins[0].style.left = coordinatePinStart.x - (window.data.mapActivator.offsetWidth) + 'px';
+    pins[0].style.left = coordinatePinStart.x + 'px';
     pins[0].style.top = coordinatePinStart.y + 'px';
     document.querySelector('.map__pins').appendChild(pins[0]);
     window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
