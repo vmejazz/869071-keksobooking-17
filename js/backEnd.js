@@ -56,7 +56,7 @@
   window.backEnd = {
     'loadData': loadData,
     'sendData': sendData,
-    'loadedData': loadedData
+    'loadedData': loadedData,
   };
 
 })();
