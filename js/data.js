@@ -5,7 +5,7 @@
   var mapOverlay = document.querySelector('.map__overlay');
   var userForm = document.querySelector('.ad-form');
   var inputAddress = userForm.querySelector('input[name=address]');
-
+  var mapPins = document.querySelector('.map__pins');
 
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
@@ -24,6 +24,7 @@
     'mapActivator': mapActivator,
     'mapOverlay': mapOverlay,
     'userForm': userForm,
-    'inputAddress': inputAddress
+    'inputAddress': inputAddress,
+    'mapPins': mapPins
   };
 })();

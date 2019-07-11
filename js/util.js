@@ -34,11 +34,26 @@
     }
   };
 
+  var popupClose = function () {
+    var popup = window.data.mapPins.querySelector('.popup');
+    popup.remove();
+  };
+
+  var popupCleaner = function () {
+    var popup = window.data.mapPins.querySelector('.popup');
+    if (popup) {
+      popup.remove();
+    }
+    return false;
+  };
+
   window.util = {
     'getRandomArbitrary': getRandomArbitrary,
     'getRandomItem': getRandomItem,
     'getShakeArray': getShakeArray,
     'isEscEvent': isEscEvent,
-    'isEnterEvent': isEnterEvent
+    'isEnterEvent': isEnterEvent,
+    'popupClose': popupClose,
+    'popupCleaner': popupCleaner
   };
 })();

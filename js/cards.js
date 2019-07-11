@@ -54,6 +54,8 @@
 
   var arrayPins = getArrayPins();
 
+  //    -----     Карточки
+
   window.cards = {
     'arrayPins': arrayPins
   };

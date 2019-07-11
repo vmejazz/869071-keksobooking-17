@@ -16,29 +16,87 @@
   .content
   .querySelector('.success');
 
+  var mapCardTemplate = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
 
-  var renderPin = function (pin) {
+  var pinsOnMap;
+
+  //    -----   Рисуем карточки объявлений
+
+  var renderCard = function (cardId) {
+    var cardNumberFromID = cardId.slice(cardId.length - 1, cardId.length);
+    var cardElement = mapCardTemplate.cloneNode(true);
+    var cardProperty = pinsRendered[cardNumberFromID];
+    cardElement.querySelector('.popup__title').innerHTML = cardProperty.offer.title;
+    cardElement.querySelector('.popup__text--address').innerHTML = cardProperty.offer.address;
+    cardElement.querySelector('.popup__text--price').innerHTML = cardProperty.offer.price + '₽/ночь';
+    cardElement.querySelector('.popup__text--capacity').innerHTML = cardProperty.offer.rooms + ' комнаты для ' + cardProperty.offer.guests + ' гостей';
+    cardElement.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + cardProperty.offer.checkin + ', выезд до ' + cardProperty.offer.checkout;
+    var featuresForCard = '';
+    cardProperty.offer.features.forEach(function (item) {
+      featuresForCard += '<li class="popup__feature popup__feature--' + item + '"></li>';
+    });
+    cardElement.querySelector('.popup__features').innerHTML = featuresForCard;
+    cardElement.querySelector('.popup__description').innerHTML = cardProperty.offer.description;
+    var offerPhotos = '';
+    cardProperty.offer.photos.forEach(function (item) {
+      offerPhotos += '<img src="' + item + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    });
+    cardElement.querySelector('.popup__photos').innerHTML = offerPhotos;
+    cardElement.querySelector('.popup__avatar ').src = cardProperty.author.avatar;
+
+    return cardElement;
+  };
+
+  var addCardOnMap = function (evtPin) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(renderCard(evtPin.id));
+
+    // var popupCloseButton = fragment.querySelector('.popup__close');
+    // console.log(popupCloseButton);
+    // popupCloseButton.addEventListener('click', window.util.popupClose);
+    mapPinsElement.appendChild(fragment);
+  };
+
+  //    -----   Рисуем Пины на карте
+
+  var renderPin = function (pin, pinIndex) {
     var pinElement = mapPinTemplate.cloneNode(true);
     var pinLocationX = pin.location.x;
     var pinLocationY = pin.location.y;
+    // console.log(pinIndex);
 
     pinElement.style = 'left: ' + pinLocationX + 'px; top: ' + pinLocationY + 'px;';
     pinElement.querySelector('img').src = pin.author.avatar;
     pinElement.querySelector('img').alt = pin.offer.type;
+    pinElement.querySelector('img').id = 'cardId ' + pinIndex;
+    // console.log(pinElement);
 
     return pinElement;
   };
 
+  var pinsRendered = [];
+
   var addPinsOnMap = function (arrayPins) {
+    pinsRendered = [];
     // arrayPins.splice(PIN_MAX_ELEMENT, arrayPins.length);
     var fragment = document.createDocumentFragment();
     var maxPinsRender = PIN_MAX_ELEMENT > arrayPins.length ? arrayPins.length : PIN_MAX_ELEMENT;
     for (var k = 0; k < maxPinsRender; k++) {
-      fragment.appendChild(renderPin(arrayPins[k]));
+      pinsRendered.push(arrayPins[k]);
+      fragment.appendChild(renderPin(arrayPins[k], k));
     }
 
     mapPinsElement.appendChild(fragment);
+
+    // pinsOnMap = document.querySelectorAll('.map__pin');
+    // console.log(pinsOnMap);
+
+    // pinsOnMap.addEventListener('click', window.render.addCardOnMap, true);
   };
+
+  //    -----   Модальные окна
 
   var onErrorLoad = function (errorMessage) {
     var node = document.createElement('div');
@@ -93,13 +151,6 @@
     window.main.getMapDeactiveStatus();
   };
 
-  // var acceptEditForm = function (button, closeElem) {
-  //   var replayButton = closeElem.querySelector(button);
-  //   replayButton.addEventListener('click', function () {
-  //     closeModal(closeElem);
-  //   });
-  // };
-
   var onErrorSend = function () {
     createModal(errorTemplate);
     var errorModal = document.querySelector('.error');
@@ -110,10 +161,16 @@
     escEventClose(errorModal);
   };
 
+  window.addEventListener('keydown', function (evt) {
+    window.util.isEscEvent(evt, window.util.popupCleaner);
+  });
+
   window.render = {
     'addPinsOnMap': addPinsOnMap,
     'onErrorLoad': onErrorLoad,
     'onSuccessSend': onSuccessSend,
-    'onErrorSend': onErrorSend
+    'onErrorSend': onErrorSend,
+    'addCardOnMap': addCardOnMap,
+    'pinsOnMap': pinsOnMap
   };
 })();
