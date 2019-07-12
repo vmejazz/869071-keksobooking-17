@@ -48,7 +48,9 @@
   window.data.mapActivator.addEventListener('click', getMapActiveStatus);
 
   var checkPinActivator = function (evt) {
-    if (evt.target.tagName === 'IMG' && evt.target.alt !== 'Метка объявления') {
+    var pinButtonMain = evt.target.parentNode.classList.contains('map__pin--main');
+    var pinButton = evt.target.parentNode.classList.contains('map__pin');
+    if (pinButton && !pinButtonMain) {
       window.util.popupCleaner();
       window.render.addCardOnMap(evt.target);
     } else if (evt.target.classList.value === 'popup__close') {
