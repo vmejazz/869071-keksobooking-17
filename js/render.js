@@ -51,11 +51,8 @@
 
   var addCardOnMap = function (evtPin) {
     var fragment = document.createDocumentFragment();
-    fragment.appendChild(renderCard(evtPin.id));
 
-    // var popupCloseButton = fragment.querySelector('.popup__close');
-    // console.log(popupCloseButton);
-    // popupCloseButton.addEventListener('click', window.util.popupClose);
+    fragment.appendChild(renderCard(evtPin.id));
     mapPinsElement.appendChild(fragment);
   };
 
@@ -65,13 +62,11 @@
     var pinElement = mapPinTemplate.cloneNode(true);
     var pinLocationX = pin.location.x;
     var pinLocationY = pin.location.y;
-    // console.log(pinIndex);
 
     pinElement.style = 'left: ' + pinLocationX + 'px; top: ' + pinLocationY + 'px;';
     pinElement.querySelector('img').src = pin.author.avatar;
     pinElement.querySelector('img').alt = pin.offer.type;
     pinElement.querySelector('img').id = 'cardId ' + pinIndex;
-    // console.log(pinElement);
 
     return pinElement;
   };
@@ -80,7 +75,6 @@
 
   var addPinsOnMap = function (arrayPins) {
     pinsRendered = [];
-    // arrayPins.splice(PIN_MAX_ELEMENT, arrayPins.length);
     var fragment = document.createDocumentFragment();
     var maxPinsRender = PIN_MAX_ELEMENT > arrayPins.length ? arrayPins.length : PIN_MAX_ELEMENT;
     for (var k = 0; k < maxPinsRender; k++) {
@@ -89,11 +83,6 @@
     }
 
     mapPinsElement.appendChild(fragment);
-
-    // pinsOnMap = document.querySelectorAll('.map__pin');
-    // console.log(pinsOnMap);
-
-    // pinsOnMap.addEventListener('click', window.render.addCardOnMap, true);
   };
 
   //    -----   Модальные окна
@@ -154,8 +143,6 @@
   var onErrorSend = function () {
     createModal(errorTemplate);
     var errorModal = document.querySelector('.error');
-
-    // acceptEditForm('.error__button', errorModal);
 
     onModal(errorModal);
     escEventClose(errorModal);

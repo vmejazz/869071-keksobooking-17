@@ -110,8 +110,4 @@
 
   var mapFilter = document.querySelector('.map__filters');
   mapFilter.addEventListener('change', refreshPins, true);
-
-  // window.render = {
-  //   'pinsAfterFilter': pinsAfterFilter
-  // };
 })();
