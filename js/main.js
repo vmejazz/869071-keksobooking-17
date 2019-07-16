@@ -30,8 +30,8 @@
   changeStateElementsForm(true);
 
   var coordinatePinForInput = {
-    x: Math.round(coordinatePinStart.x + (window.data.mapActivator.offsetWidth / 2)),
-    y: Math.round(coordinatePinStart.y + (window.data.mapActivator.offsetHeight / 2))
+    x: Math.round(coordinatePinStart.x + (window.data.PIN_WIDTH / 2)),
+    y: Math.round(coordinatePinStart.y + (window.data.PIN_HEIGHT / 2))
   };
 
   window.data.inputAddress.value = coordinatePinForInput.x + ',' + coordinatePinForInput.y;
