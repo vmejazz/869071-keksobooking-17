@@ -15,7 +15,7 @@
 
   var getCoordinatePin = function (element) {
     var x = Math.round(element.offsetLeft + window.data.PIN_WIDTH / 2);
-    var y = Math.round(element.offsetTop + window.data.PIN_HEIGHT);
+    var y = Math.round(element.offsetTop);
     return (x + ',' + y);
   };
 
