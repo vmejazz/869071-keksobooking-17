@@ -11,8 +11,8 @@
   var PIN_HEIGHT = 70;
   var LIMIT_PIN_TOP = 130;
   var LIMIT_PIN_BOTTOM = 630;
-  var LIMIT_PIN_LEFT = -(mapActivator.offsetWidth / 2);
-  var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - (mapActivator.offsetWidth / 2);
+  var LIMIT_PIN_LEFT = -(PIN_WIDTH / 2);
+  var LIMIT_PIN_RIGHT = mapOverlay.offsetWidth - (PIN_WIDTH / 2);
 
   window.data = {
     'PIN_WIDTH': PIN_WIDTH,
