@@ -101,6 +101,7 @@
 
   var refreshPins = function () {
     pinsAfterFilter = [];
+    window.util.popupCleaner();
 
     getfilterObject(mapFilter);
     getPinsAfterFilter();
