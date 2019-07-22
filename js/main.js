@@ -4,6 +4,7 @@
   var mapStatus = document.querySelector('.map');
 
   var formsElement = document.querySelectorAll('form');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   // Адрес и активация центрального маркера  -------------------------------------------------------------
 
@@ -42,6 +43,7 @@
     window.data.userForm.classList.remove('ad-form--disabled');
     window.backEnd.loadData(window.render.addPinsOnMap, window.render.onErrorLoad);
     window.data.inputAddress.value = getCoordinatePin(window.data.mapActivator);
+    resetButton.addEventListener('click', onResetPageButton);
   };
 
   window.data.mapActivator.addEventListener('click', getMapActiveStatus);
@@ -93,6 +95,7 @@
     window.data.userForm.classList.add('ad-form--disabled');
     window.data.mapActivator.addEventListener('click', getMapActiveStatus);
     window.data.inputAddress.value = coordinatePinStart.x + ',' + coordinatePinStart.y;
+    window.util.popupClose();
   };
 
   //  ----------- Ресет страницы
@@ -100,10 +103,8 @@
   var onResetPageButton = function () {
     resetPage();
     getMapDeactiveStatus();
+    resetButton.removeEventListener('click', onResetPageButton);
   };
-
-  var resetButton = document.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', onResetPageButton);
 
   // ------ Глобальные переменные
 
