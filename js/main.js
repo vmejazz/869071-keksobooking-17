@@ -43,7 +43,7 @@
     window.data.userForm.classList.remove('ad-form--disabled');
     window.backEnd.loadData(window.render.addPinsOnMap, window.render.onErrorLoad);
     window.data.inputAddress.value = getCoordinatePin(window.data.mapActivator);
-    resetButton.addEventListener('click', onResetPageButton);
+    resetButton.addEventListener('click', onResetPageButtonClick);
   };
 
   window.data.mapActivator.addEventListener('click', getMapActiveStatus);
@@ -100,10 +100,10 @@
 
   //  ----------- Ресет страницы
 
-  var onResetPageButton = function () {
+  var onResetPageButtonClick = function () {
     resetPage();
     getMapDeactiveStatus();
-    resetButton.removeEventListener('click', onResetPageButton);
+    resetButton.removeEventListener('click', onResetPageButtonClick);
   };
 
   // ------ Глобальные переменные
