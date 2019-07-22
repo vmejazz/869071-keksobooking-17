@@ -4,6 +4,10 @@
   var pinsAfterFilter = [];
   var filterPropertyes = {};
   var filterFeatures = [];
+  var PriceFilter = {
+    MIN_PRICE: 10000,
+    MAX_PRICE: 50000
+  };
 
   //  ------  Записываем все фильтры в объект
 
@@ -39,11 +43,11 @@
     if (price === 'any') {
       return true;
     } else if (price === 'low') {
-      return value < 10000;
+      return value < PriceFilter.MIN_PRICE;
     } else if (price === 'middle') {
-      return (value <= 50000 && value >= 10000);
+      return (value <= PriceFilter.MAX_PRICE && value >= PriceFilter.MIN_PRICE);
     } else if (price === 'high') {
-      return value > 50000;
+      return value > PriceFilter.MAX_PRICE;
     }
     return false;
   };
