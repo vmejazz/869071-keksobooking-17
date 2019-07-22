@@ -15,7 +15,7 @@
     return ARRAY_APARTAMENTS_STYLE[keys[window.util.getRandomItem(keys)]];
   };
 
-  var getArraySrc = function (arrayCount) {
+  var getArrayAvatarSources = function (arrayCount) {
     var array = [];
     for (var i = 0; i < arrayCount; i++) {
       array.push(i + 1);
@@ -23,13 +23,13 @@
     return array;
   };
 
-  var arraySrc = window.util.getShakeArray(getArraySrc(PINS_COUNT));
+  var arrayAvatarSources = window.util.getShakeArray(getArrayAvatarSources(PINS_COUNT));
 
   var getPinProperty = function (i) {
     var pinProperty = {
       'author':
         {
-          'avatar': 'img/avatars/user0' + arraySrc[i] + '.png'
+          'avatar': 'img/avatars/user0' + arrayAvatarSources[i] + '.png'
         },
       'offer':
         {

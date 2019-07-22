@@ -51,7 +51,7 @@
     var pinButtonMain = evt.target.parentNode.classList.contains('map__pin--main');
     var pinButton = evt.target.parentNode.classList.contains('map__pin');
     if (pinButton && !pinButtonMain) {
-      window.util.popupCleaner();
+      window.util.popupClose();
       window.render.addCardOnMap(evt.target);
     } else if (evt.target.classList.value === 'popup__close') {
       window.util.popupClose();

@@ -22,24 +22,19 @@
     return array;
   };
 
-  var isEscEvent = function (evt, action, modal) {
+  var isEscEventPress = function (evt, action, modal) {
     if (evt.keyCode === ESC_KEYCODE || evt.which === ESC_KEYCODE) {
       action(modal);
     }
   };
 
-  var isEnterEvent = function (evt, action) {
+  var isEnterEventPress = function (evt, action) {
     if (evt.keyCode === ENTER_KEYCODE || evt.which === ENTER_KEYCODE) {
       action();
     }
   };
 
   var popupClose = function () {
-    var popup = window.data.mapPins.querySelector('.popup');
-    popup.remove();
-  };
-
-  var popupCleaner = function () {
     var popup = window.data.mapPins.querySelector('.popup');
     if (popup) {
       popup.remove();
@@ -51,9 +46,8 @@
     'getRandomArbitrary': getRandomArbitrary,
     'getRandomItem': getRandomItem,
     'getShakeArray': getShakeArray,
-    'isEscEvent': isEscEvent,
-    'isEnterEvent': isEnterEvent,
-    'popupClose': popupClose,
-    'popupCleaner': popupCleaner
+    'isEscEventPress': isEscEventPress,
+    'isEnterEventPress': isEnterEventPress,
+    'popupClose': popupClose
   };
 })();

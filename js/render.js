@@ -113,7 +113,7 @@
     document.querySelector('main').appendChild(fragment);
   };
 
-  var onModal = function (elem) {
+  var onModalClick = function (elem) {
     elem.addEventListener('click', function () {
       closeModal(elem);
     });
@@ -125,7 +125,7 @@
 
   var escEventClose = function (elem) {
     window.addEventListener('keydown', function (evt) {
-      window.util.isEscEvent(evt, closeModal, elem);
+      window.util.isEscEventPress(evt, closeModal, elem);
     });
   };
 
@@ -134,7 +134,7 @@
     createModal(successTemplate);
     var successModal = document.querySelector('.success');
 
-    onModal(successModal);
+    onModalClick(successModal);
     document.activeElement.blur();
     escEventClose(successModal);
     window.main.getMapDeactiveStatus();
@@ -144,12 +144,12 @@
     createModal(errorTemplate);
     var errorModal = document.querySelector('.error');
 
-    onModal(errorModal);
+    onModalClick(errorModal);
     escEventClose(errorModal);
   };
 
   window.addEventListener('keydown', function (evt) {
-    window.util.isEscEvent(evt, window.util.popupCleaner);
+    window.util.isEscEventPress(evt, window.util.popupClose);
   });
 
   window.render = {
