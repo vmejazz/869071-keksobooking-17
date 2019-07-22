@@ -3,7 +3,7 @@
 (function () {
   var typeOfRoom = document.querySelector('#type');
   var priceInput = document.querySelector('#price');
-  var MIN_PRICE_FOR_ROOM = {
+  var priceMinForTypeRoomMap = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
@@ -11,7 +11,7 @@
   };
 
   var getMinPriceForRoom = function (selectedRoom) {
-    return MIN_PRICE_FOR_ROOM[selectedRoom];
+    return priceMinForTypeRoomMap[selectedRoom];
   };
 
   var chouseTypeOfRoom = function () {

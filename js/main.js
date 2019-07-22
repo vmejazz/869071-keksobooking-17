@@ -4,7 +4,6 @@
   var mapStatus = document.querySelector('.map');
 
   var formsElement = document.querySelectorAll('form');
-  // var mainPinElement = mapStatus.querySelector('.map__pin--main');
 
   // Адрес и активация центрального маркера  -------------------------------------------------------------
 

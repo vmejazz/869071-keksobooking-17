@@ -3,7 +3,7 @@
 (function () {
   var PINS_COUNT = 8;
 
-  var ARRAY_APARTAMENTS_STYLE = {
+  var apartamentsStyleMap = {
     'palace': 'Дворец',
     'flat': 'Квартира',
     'house': 'Дом',
@@ -11,8 +11,8 @@
   };
 
   var getRandomApartamensStyle = function () {
-    var keys = Object.keys(ARRAY_APARTAMENTS_STYLE);
-    return ARRAY_APARTAMENTS_STYLE[keys[window.util.getRandomItem(keys)]];
+    var keys = Object.keys(apartamentsStyleMap);
+    return apartamentsStyleMap[keys[window.util.getRandomItem(keys)]];
   };
 
   var getArrayAvatarSources = function (arrayCount) {
