@@ -3,17 +3,17 @@
 (function () {
   var pinsAfterFilter = [];
   var filterPropertyes = {};
-  var filterFueatures = [];
+  var filterFeatures = [];
 
   //  ------  Записываем все фильтры в объект
 
   var getFeatures = function () {
-    filterFueatures = [];
+    filterFeatures = [];
     var filterInputChecked = mapFilter.querySelectorAll('input:checked');
     filterInputChecked.forEach(function (item) {
-      filterFueatures.push(item.value);
+      filterFeatures.push(item.value);
     });
-    return filterFueatures;
+    return filterFeatures;
   };
 
   var getfilterObject = function (target) {

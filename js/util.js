@@ -39,7 +39,6 @@
     if (popup) {
       popup.remove();
     }
-    return false;
   };
 
   window.util = {

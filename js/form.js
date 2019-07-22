@@ -14,14 +14,14 @@
     return priceMinForTypeRoomMap[selectedRoom];
   };
 
-  var chouseTypeOfRoom = function () {
+  var chooseTypeOfRoom = function () {
     var newMinValue = getMinPriceForRoom(typeOfRoom.value);
     priceInput.setAttribute('min', newMinValue);
     priceInput.setAttribute('placeholder', newMinValue);
   };
 
-  typeOfRoom.addEventListener('change', function (evt) {
-    chouseTypeOfRoom();
+  typeOfRoom.addEventListener('change', function () {
+    chooseTypeOfRoom();
   }, true);
 
   priceInput.setAttribute('min', getMinPriceForRoom(typeOfRoom.value));
@@ -119,7 +119,7 @@
   });
 
   window.form = {
-    'chouseTypeOfRoom': chouseTypeOfRoom
+    'chooseTypeOfRoom': chooseTypeOfRoom
   };
 
 })();
