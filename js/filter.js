@@ -32,34 +32,26 @@
 
   var checkPinType = function (value) {
     var type = filterPropertyes['housing-type'];
-    if (type === 'any' || value === type) {
-      return true;
-    }
-    return false;
+    var typeChecked = (type === 'any' || value === type) ? true : false;
+    return typeChecked;
   };
 
   var checkPinPrice = function (value) {
     var price = filterPropertyes['housing-price'];
     if (price === 'any') {
-      return true;
+      return value;
     } else if (price === 'low') {
       return value < PriceFilter.MIN_PRICE;
-    } else if (price === 'middle') {
-      return (value <= PriceFilter.MAX_PRICE && value >= PriceFilter.MIN_PRICE);
     } else if (price === 'high') {
       return value > PriceFilter.MAX_PRICE;
     }
-    return false;
+    return (value <= PriceFilter.MAX_PRICE && value >= PriceFilter.MIN_PRICE);
   };
 
   var checkPinRooms = function (value) {
     var rooms = filterPropertyes['housing-rooms'];
-    if (rooms === 'any') {
-      return true;
-    } else if (value === Number(rooms)) {
-      return true;
-    }
-    return false;
+    var roomsChecked = (rooms === 'any' || value === Number(rooms)) ? true : false;
+    return roomsChecked;
   };
 
   var checkPinGuests = function (value) {
@@ -79,11 +71,9 @@
     if (features.length < 0) {
       return true;
     } else {
-      var state = features.every(function (currentValue) {
-        if (valueArray.indexOf(currentValue) < 0) {
-          return false;
-        }
-        return true;
+      var state = features.every(function (value) {
+        var statePin = (valueArray.indexOf(value) >= 0) ? true : false;
+        return statePin;
       });
       return state;
     }
