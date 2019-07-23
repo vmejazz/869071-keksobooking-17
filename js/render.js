@@ -20,8 +20,6 @@
   .content
   .querySelector('.map__card');
 
-  var pinsOnMap;
-
   //    -----   Рисуем карточки объявлений
 
   var renderCard = function (cardId) {
@@ -158,6 +156,5 @@
     'onSuccessSend': onSuccessSend,
     'onErrorSend': onErrorSend,
     'addCardOnMap': addCardOnMap,
-    'pinsOnMap': pinsOnMap
   };
 })();
