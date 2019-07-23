@@ -13,7 +13,7 @@
 
   var getFeatures = function () {
     filterFeatures = [];
-    var filterInputChecked = mapFilter.querySelectorAll('input:checked');
+    var filterInputChecked = Array.from(mapFilter.querySelectorAll('input:checked'));
     filterInputChecked.forEach(function (item) {
       filterFeatures.push(item.value);
     });
