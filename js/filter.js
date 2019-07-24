@@ -104,5 +104,5 @@
   };
 
   var mapFilter = document.querySelector('.map__filters');
-  mapFilter.addEventListener('change', refreshPins, true);
+  mapFilter.addEventListener('change', window.debounce(refreshPins), true);
 })();
