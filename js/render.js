@@ -101,6 +101,7 @@
     var fragment = document.createDocumentFragment();
     var maxPinsRender = PIN_MAX_ELEMENT > arrayPins.length ? arrayPins.length : PIN_MAX_ELEMENT;
     for (var k = 0; k < maxPinsRender; k++) {
+      k = (arrayPins[k].hasOwnProperty('offer')) ? k : k + 1;
       pinsRendered.push(arrayPins[k]);
       fragment.appendChild(renderPin(arrayPins[k], k));
     }
