@@ -10,6 +10,13 @@
     'palace': 10000
   };
 
+  var NumberOfRooms = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    HUNDRED: 100
+  };
+
   var getMinPriceForRoom = function (selectedRoom) {
     return priceMinForTypeRoomMap[selectedRoom];
   };
@@ -59,10 +66,10 @@
   var messageOfRoomsNumbers = function (roomsValue) {
     var message = 'Неверное количество мест для гостей! Максимальное количество гостей выбранного размещения - ';
     switch (roomsValue) {
-      case 1:
+      case NumberOfRooms.ONE:
         return message + roomsValue + ' гость';
-      case 2:
-      case 3:
+      case NumberOfRooms.TWO:
+      case NumberOfRooms.THREE:
         return message + roomsValue + ' гостей';
       default:
         return 'Неверное количество мест для гостей! Выберите \'не для гостей\'';
@@ -89,16 +96,16 @@
 
   var validateInputGuest = function () {
     switch (Number(inputRoomNumber.value)) {
-      case 1:
+      case NumberOfRooms.ONE:
         checkInputCapacity(1, 1);
         break;
-      case 2:
+      case NumberOfRooms.TWO:
         checkInputCapacity(2, 2, 1);
         break;
-      case 3:
+      case NumberOfRooms.THREE:
         checkInputCapacity(3, 3, 2, 1);
         break;
-      case 100:
+      case NumberOfRooms.HUNDRED:
         checkInputCapacity(0, 0);
         break;
       default:

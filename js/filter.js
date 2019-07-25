@@ -32,8 +32,7 @@
 
   var checkPinType = function (value) {
     var type = filterPropertyes['housing-type'];
-    var typeChecked = (type === 'any' || value === type) ? true : false;
-    return typeChecked;
+    return (type === 'any' || value === type);
   };
 
   var checkPinPrice = function (value) {
@@ -50,8 +49,7 @@
 
   var checkPinRooms = function (value) {
     var rooms = filterPropertyes['housing-rooms'];
-    var roomsChecked = (rooms === 'any' || value === Number(rooms)) ? true : false;
-    return roomsChecked;
+    return (rooms === 'any' || value === Number(rooms));
   };
 
   var checkPinGuests = function (value) {
@@ -71,11 +69,9 @@
     if (features.length < 0) {
       return true;
     } else {
-      var state = features.every(function (value) {
-        var statePin = (valueArray.indexOf(value) >= 0) ? true : false;
-        return statePin;
+      return features.every(function (value) {
+        return (valueArray.indexOf(value) >= 0);
       });
-      return state;
     }
   };
 
