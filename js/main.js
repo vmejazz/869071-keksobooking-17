@@ -68,7 +68,7 @@
     for (var i = 0; i < forms.length; i++) {
       forms[i].reset();
     }
-    window.form.chouseTypeOfRoom();
+    window.form.chooseTypeOfRoom();
   };
 
   var resetPins = function () {
